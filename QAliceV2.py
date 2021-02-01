@@ -240,69 +240,6 @@ class AliceChatModule:
 			
 		return start, key_word_dict
 	
-	def connect_words(self, start, end):
-		#Trys to connect 2 words
-		
-		end = self.__word_list.find_word(end)
-		start = self.__word_list.find_word(start)
-		before_end = end.get_before()
-		
-		for j in range(SENT_TRIALS):
-			sentence = start.get_name()
-			if start.get_name() in before_end:
-				return sentence + " " + end.get_name()
-				
-			curr_word = start.get_after()
-			curr_word = random.choice(curr_word)
-			
-			#makes sure its not punctuation
-			#if it is break and try again
-			x = 0
-			while curr_word in PUNCT:
-				if x < 100:
-					curr_word = random.choice(start.get_after())
-					x += 1
-				else:
-					break
-			#if its still punct, break
-			if curr_word in PUNCT:
-				break
-			
-			#if not continue on
-			else:
-				curr_word = self.__word_list.find_word(curr_word)
-				sentence += " " + curr_word.get_name()
-				#sees if curr_word is before the end word
-				if curr_word.get_name() in before_end:
-					return sentence
-				
-				for i in range(SENT_LEN):
-					next_word = random.choice(curr_word.get_after())
-					
-					#makes sure its not punctuation
-					x = 0
-					while next_word in PUNCT:
-						if x < 100:
-							next_word = random.choice(curr_word.get_after())
-							x += 1
-						else:
-							break
-					#if its still punct, break
-					if next_word in PUNCT:
-						break
-					
-					#if not continue
-					else:
-						next_word = self.__word_list.find_word(next_word)
-						curr_word = next_word
-						sentence += " " + curr_word.get_name()
-						if curr_word.get_name() in before_end:
-							return sentence + " " + end.get_name()
-			
-			#if it cant connect the words, default to start and end
-			sentence = start.get_name() + " and " + end.get_name()
-		return sentence
-	
 	def make_sentence(self, start, key_word_dict):	
 		#makes a sentence by picking a word that comes after the next
 		#the word picked is either a key word (which is chosen depening on probability)
@@ -421,7 +358,7 @@ qalice = AliceChatModule(TOKEN, "QAlice")
 
 @client.event
 async def on_ready():
-	print("QAlice is online. Currently running V.2.1")
+	print("QAlice is online. Currently running V.2.3")
 
 @client.event
 async def on_message(message):
